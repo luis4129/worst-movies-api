@@ -1,13 +1,38 @@
 package com.texoit.worstmovies.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
+@Entity
 public class Producer {
 
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @JsonValue
     private String name;
+
+    @ManyToMany(mappedBy = "producers")
+    @JsonBackReference
     private Collection<Movie> movies;
+
+    public Producer() {
+        super();
+    }
+
+    public Producer(String name, Movie movie) {
+        this.name = name;
+        addMovie(movie);
+    }
 
     public Long getId() {
         return id;
@@ -26,12 +51,17 @@ public class Producer {
     }
 
     public Collection<Movie> getMovies() {
-        if (movies == null)
-            movies = new ArrayList<Movie>();
+        if (this.movies == null)
+            this.movies = new ArrayList<>();
+
         return movies;
     }
 
     public void setMovies(Collection<Movie> movies) {
         this.movies = movies;
+    }
+
+    public void addMovie(Movie movie) {
+        getMovies().add(movie);
     }
 }

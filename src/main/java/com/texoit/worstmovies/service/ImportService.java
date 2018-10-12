@@ -9,6 +9,5 @@ import java.util.List;
 public interface ImportService {
 
     <T> List<T> importData(Class<T> type, String fileName) throws IOException;
-    List<Long[]> importRelationships(String fileName) throws IOException;
 
 }
