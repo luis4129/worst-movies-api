@@ -1,14 +1,14 @@
 package com.texoit.worstmovies.service;
 
 import com.texoit.worstmovies.dto.ProducerWinIntervalDTO;
-import com.texoit.worstmovies.dto.StudioWinCountDTO;
-import com.texoit.worstmovies.model.Producer;
+import com.texoit.worstmovies.exception.EmptySearchException;
 import com.texoit.worstmovies.repository.ProducerRepository;
-import com.texoit.worstmovies.repository.StudioRepository;
+import com.texoit.worstmovies.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class ProducerServiceImpl implements ProducerService {
@@ -17,12 +17,16 @@ public class ProducerServiceImpl implements ProducerService {
     ProducerRepository producerRepository;
 
     @Override
-    public ProducerWinIntervalDTO findHighestWinInterval() {
-        return producerRepository.findHighestProducersInterval().stream().findFirst().get();
+    public Collection<ProducerWinIntervalDTO> findHighestWinInterval() throws EmptySearchException {
+        return Validator.getNonEmptyCollection(filterByHighestInterval(producerRepository.findProducersHighestInterval()));
     }
 
     @Override
-    public ProducerWinIntervalDTO findLowestWinInterval() {
-        return producerRepository.findLowestProducersInterval().stream().findFirst().get();
+    public Collection<ProducerWinIntervalDTO> findLowestWinInterval() throws EmptySearchException {
+        return Validator.getNonEmptyCollection(filterByHighestInterval(producerRepository.findProducersLowestInterval()));
+    }
+
+    private Collection<ProducerWinIntervalDTO> filterByHighestInterval(Collection<ProducerWinIntervalDTO> intervals) {
+        return intervals.stream().filter(interval -> interval.equals(intervals.stream().map(ProducerWinIntervalDTO::getInterval).findFirst().orElse(-1))).collect(Collectors.toList());
     }
 }

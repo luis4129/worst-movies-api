@@ -1,11 +1,14 @@
 package com.texoit.worstmovies.service;
 
 import com.texoit.worstmovies.dto.YearWinCountDTO;
+import com.texoit.worstmovies.exception.EmptySearchException;
+import com.texoit.worstmovies.exception.WinnerDeleteException;
 import com.texoit.worstmovies.model.Movie;
 import com.texoit.worstmovies.dto.MovieImportDTO;
 import com.texoit.worstmovies.model.Producer;
 import com.texoit.worstmovies.model.Studio;
 import com.texoit.worstmovies.repository.MovieRepository;
+import com.texoit.worstmovies.util.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,23 +40,34 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Collection<Movie> findWinners() {
-        return movieRepository.findMovieByWinner(true);
+    public Collection<Movie> findWinners() throws EmptySearchException {
+        return Validator.getNonEmptyCollection(movieRepository.findMovieByWinner(true));
+    }
+
+
+    @Override
+    public Collection<Movie> findAll() throws EmptySearchException {
+        return Validator.getNonEmptyCollection((Collection) movieRepository.findAll());
     }
 
     @Override
-    public Collection<Movie> findAll() {
-        return (Collection<Movie>) movieRepository.findAll();
+    public Collection<YearWinCountDTO> findWinnerCountByYear() throws EmptySearchException {
+        return Validator.getNonEmptyCollection(movieRepository.findWinnerCountByYear().stream().filter(yearWinCountDTO -> yearWinCountDTO.getWinnerCount() > 1).collect(Collectors.toList()));
     }
 
     @Override
-    public Collection<YearWinCountDTO> findWinnerCountByYear() {
-        return movieRepository.findWinnerCountByYear().stream().filter(yearWinCountDTO -> yearWinCountDTO.getWinnerCount() > 1).collect(Collectors.toList());
+    public Movie findById(Long id) throws EmptySearchException {
+        return Validator.getNonEmptyOptional(movieRepository.findById(id)).get();
     }
 
     @Override
-    public Optional<Movie> findById(Long id) {
-        return movieRepository.findById(id);
+    public void delete(Long id) throws WinnerDeleteException, EmptySearchException {
+        Optional<Movie> movie = Validator.getNonEmptyOptional(movieRepository.findById(id));
+
+        if(movie.get().isWinner())
+            throw new WinnerDeleteException();
+
+        movieRepository.delete(movie.get());
     }
 
     private Map<String, Producer> getProducersMapByMovie(Collection<Movie> movies) {
@@ -74,18 +88,5 @@ public class MovieServiceImpl implements MovieService {
                     studio1.getMovies().addAll(studio2.getMovies());
                     return studio1;
                 }));
-    }
-
-    @Override
-    public void delete(Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-
-        if(!movie.isPresent())
-            return;
-
-        if(movie.get().isWinner())
-            return;
-
-        movieRepository.delete(movie.get());
     }
 }

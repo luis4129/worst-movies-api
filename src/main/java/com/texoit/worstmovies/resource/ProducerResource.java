@@ -2,6 +2,7 @@ package com.texoit.worstmovies.resource;
 
 import com.texoit.worstmovies.dto.ProducerWinIntervalDTO;
 import com.texoit.worstmovies.dto.StudioWinCountDTO;
+import com.texoit.worstmovies.exception.EmptySearchException;
 import com.texoit.worstmovies.model.Producer;
 import com.texoit.worstmovies.service.ProducerService;
 import com.texoit.worstmovies.service.StudioService;
@@ -25,11 +26,15 @@ public class ProducerResource {
     ProducerService producerService;
 
     @GetMapping("/interval")
-    public ResponseEntity<Map<String, ProducerWinIntervalDTO>> studios() {
-        Map<String, ProducerWinIntervalDTO> intervalsMap = new HashMap<>();
-        intervalsMap.put("min", producerService.findHighestWinInterval());
-        intervalsMap.put("max", producerService.findLowestWinInterval());
-        return new ResponseEntity(intervalsMap, HttpStatus.OK);
+    public ResponseEntity<Map<String, Collection<ProducerWinIntervalDTO>>> studios() {
+        try {
+            Map<String, Collection<ProducerWinIntervalDTO>> intervalsMap = new HashMap<>();
+            intervalsMap.put("min", producerService.findHighestWinInterval());
+            intervalsMap.put("max", producerService.findLowestWinInterval());
+            return new ResponseEntity(intervalsMap, HttpStatus.OK);
+        } catch (EmptySearchException ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

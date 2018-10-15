@@ -1,6 +1,7 @@
 package com.texoit.worstmovies.resource;
 
 import com.texoit.worstmovies.dto.YearWinCountDTO;
+import com.texoit.worstmovies.exception.EmptySearchException;
 import com.texoit.worstmovies.service.MovieService;
 import com.texoit.worstmovies.util.CollectionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,11 @@ public class YearResource {
 
     @GetMapping("/multipleWinners")
     public ResponseEntity<Map<String, Collection<YearWinCountDTO>>> findWinnerCountByYear() {
-        Collection yearsDTO = movieService.findWinnerCountByYear();
-
-        if (yearsDTO.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            return new ResponseEntity(CollectionWrapper.wrap("years", movieService.findWinnerCountByYear()), HttpStatus.OK);
+        } catch (EmptySearchException ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<Map<String, Collection<YearWinCountDTO>>>(CollectionWrapper.wrap("years", yearsDTO), HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.texoit.worstmovies.resource;
 
 import com.texoit.worstmovies.dto.StudioWinCountDTO;
+import com.texoit.worstmovies.exception.EmptySearchException;
 import com.texoit.worstmovies.service.StudioService;
 import com.texoit.worstmovies.util.CollectionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,11 @@ public class StudioResource {
 
     @GetMapping
     public ResponseEntity<Map<String, Collection<StudioWinCountDTO>>> studios() {
-        Collection studios = studioService.findAll();
-
-        if (studios.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            return new ResponseEntity(CollectionWrapper.wrap("studios", studioService.findAll()), HttpStatus.OK);
+        } catch (EmptySearchException ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity(CollectionWrapper.wrap("studios", studios), HttpStatus.OK);
     }
 
 }
