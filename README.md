@@ -21,7 +21,7 @@ Caso ainda estiver com o Git Bash utilizado anteriormente, execute o comando aba
 
 Caso contrário, basta abrir outro Git Bash no diretório do repositório clonado.
 
-Após isso, basta executar o comando abaixo para gerar o JAR do repositório:
+Após isso, basta executar o comando abaixo para gerar o JAR do repositório (Nesse momento os testes serão rodados):
 - $ mvn package
 
 # Executando o JAR
@@ -30,7 +30,7 @@ Agora só falta executar, execute o comando abaixo para entrar no diretório do 
 - $ cd target
 
 Agora basta executar o JAR, com o comando abaixo:
-- $ java -jar worst-movies-api-0.0.1-SNAPSHOT.jar
+- $ java -jar worstmovies-0.0.1-SNAPSHOT.jar
 
 # Pronto! Agora é só abrir consumir os end-points abaixo:
 - Listar todos os filmes: (GET) http://localhost:8008/movies;
