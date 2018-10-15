@@ -12,6 +12,6 @@ public interface MovieRepository extends CrudRepository<Movie, Long> {
     @Query("SELECT new com.texoit.worstmovies.dto.YearWinCountDTO(m.year, count(m)) FROM Movie m WHERE m.winner = true GROUP BY m.year ORDER BY 2 DESC")
     Collection<YearWinCountDTO> findWinnerCountByYear();
 
-    Collection<Movie> findMovieByWinner(boolean winner);
+    Collection<Movie> findMovieByWinnerAndYear(boolean winner, Integer year);
 
 }

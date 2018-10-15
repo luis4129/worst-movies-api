@@ -18,10 +18,10 @@ public class MovieResource {
     @Autowired
     MovieService movieService;
 
-    @GetMapping("/winners")
-    public ResponseEntity<Collection<Movie>> findWinners() {
+    @GetMapping("/winners/{year}")
+    public ResponseEntity<Collection<Movie>> findWinners(@PathVariable("year") Integer year) {
         try {
-            return new ResponseEntity<>(movieService.findWinners(), HttpStatus.OK);
+            return new ResponseEntity<>(movieService.findWinnersByYear(year), HttpStatus.OK);
         } catch (EmptySearchException ex) {
             return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
         }

@@ -12,10 +12,10 @@ import java.util.Collection;
 @Component
 public interface MovieService {
 
-    void importData() throws IOException;
-    Collection<Movie> findWinners() throws EmptySearchException;
+    Collection<Movie> importData() throws IOException;
+    Collection<Movie> findWinnersByYear(Integer year) throws EmptySearchException;
     Collection<Movie> findAll() throws EmptySearchException;
     Movie findById(Long id) throws EmptySearchException;
-    Collection<YearWinCountDTO> findWinnerCountByYear() throws EmptySearchException;
+    Collection<YearWinCountDTO> findYearsWithMultipleWinners() throws EmptySearchException;
     void delete(Long id) throws WinnerDeleteException, EmptySearchException;
 }

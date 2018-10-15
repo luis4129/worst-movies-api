@@ -28,7 +28,7 @@ public class MovieServiceImpl implements MovieService {
     private static final String MOVIE_LIST_FILE = System.getProperties().get("user.dir") + "\\csv-data\\movielist.csv";
 
     @Override
-    public void importData() throws IOException {
+    public Collection<Movie> importData() throws IOException {
         Collection<Movie> movies = importService.importData(MovieImportDTO.class, MOVIE_LIST_FILE).stream().map(movieImportDTO -> new Movie(movieImportDTO)).collect(Collectors.toList());
         Map<String, Producer> producersByNames = getProducersMapByMovie(movies);
         Map<String, Studio> studiosByNames = getStudiosMapByMovie(movies);
@@ -36,12 +36,12 @@ public class MovieServiceImpl implements MovieService {
             movie.setProducers(movie.getProducers().stream().map(producer -> producersByNames.get(producer.getName())).collect(Collectors.toList()));
             movie.setStudios(movie.getStudios().stream().map(studio-> studiosByNames.get(studio.getName())).collect(Collectors.toList()));
         });
-        movieRepository.saveAll(movies);
+        return (Collection<Movie>) movieRepository.saveAll(movies);
     }
 
     @Override
-    public Collection<Movie> findWinners() throws EmptySearchException {
-        return Validator.getNonEmptyCollection(movieRepository.findMovieByWinner(true));
+    public Collection<Movie> findWinnersByYear(Integer year) throws EmptySearchException {
+        return Validator.getNonEmptyCollection(movieRepository.findMovieByWinnerAndYear(true, year));
     }
 
 
@@ -51,7 +51,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Collection<YearWinCountDTO> findWinnerCountByYear() throws EmptySearchException {
+    public Collection<YearWinCountDTO> findYearsWithMultipleWinners() throws EmptySearchException {
         return Validator.getNonEmptyCollection(movieRepository.findWinnerCountByYear().stream().filter(yearWinCountDTO -> yearWinCountDTO.getWinnerCount() > 1).collect(Collectors.toList()));
     }
 

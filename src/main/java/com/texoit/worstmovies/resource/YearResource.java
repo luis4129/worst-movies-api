@@ -24,7 +24,7 @@ public class YearResource {
     @GetMapping("/multipleWinners")
     public ResponseEntity<Map<String, Collection<YearWinCountDTO>>> findWinnerCountByYear() {
         try {
-            return new ResponseEntity(CollectionWrapper.wrap("years", movieService.findWinnerCountByYear()), HttpStatus.OK);
+            return new ResponseEntity(CollectionWrapper.wrap("years", movieService.findYearsWithMultipleWinners()), HttpStatus.OK);
         } catch (EmptySearchException ex) {
             return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
