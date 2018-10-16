@@ -25,7 +25,7 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     MovieRepository movieRepository;
 
-    private static final String MOVIE_LIST_FILE = System.getProperties().get("user.dir") + "\\csv-data\\movielist.csv";
+    private static final String MOVIE_LIST_FILE = System.getProperties().get("user.dir").toString().replace("\\target", "") + "\\csv-data\\movielist.csv";
 
     @Override
     public Collection<Movie> importData() throws IOException {
