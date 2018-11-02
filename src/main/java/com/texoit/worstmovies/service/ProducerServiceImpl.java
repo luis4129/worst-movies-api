@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,5 +30,13 @@ public class ProducerServiceImpl implements ProducerService {
 
     private Collection<ProducerWinIntervalDTO> filterByHighestInterval(Collection<ProducerWinIntervalDTO> intervals) {
         return intervals.stream().filter(interval -> interval.equals(intervals.stream().map(ProducerWinIntervalDTO::getInterval).findFirst().orElse(-1))).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Collection<ProducerWinIntervalDTO>> findHighestAndLowestWinInterval() throws EmptySearchException {
+        Map<String, Collection<ProducerWinIntervalDTO>> intervalsMap = new HashMap<>();
+        intervalsMap.put("min", this.findHighestWinInterval());
+        intervalsMap.put("max", this.findLowestWinInterval());
+        return intervalsMap;
     }
 }

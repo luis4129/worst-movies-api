@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,13 +30,13 @@ public class MovieResourceTest {
 
     @Test
     public void testValidFindWinners() throws Exception {
-        mockMvc.perform(get("/movies/winners/2000")).andExpect(status().isOk());
+        mockMvc.perform(get("/movies/years/2000/winners")).andExpect(status().isOk());
     }
 
     @Test
     public void testEmptyFindWinners() throws Exception {
         given(movieService.findWinnersByYear(2020)).willThrow(EmptySearchException.class);
-        mockMvc.perform(get("/movies/winners/2020")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/movies/years/2020/winners")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -75,6 +76,17 @@ public class MovieResourceTest {
     public void testWinnerDelete() throws Exception {
         doThrow(new WinnerDeleteException()).when(movieService).delete(1L);
         mockMvc.perform(delete("/movies/1")).andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void testValidMultipleWinners() throws Exception {
+        mockMvc.perform(get("/movies/years/multipleWinners")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testEmptyMultipleWinners() throws Exception {
+        when(movieService.findYearsWithMultipleWinners()).thenThrow(EmptySearchException.class);
+        mockMvc.perform(get("/movies/years/multipleWinners")).andExpect(status().isNotFound());
     }
 
 }

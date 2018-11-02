@@ -31,19 +31,19 @@ public class ProducerResourceTest {
 
     @Test
     public void testValidFindIntervals() throws Exception {
-        mockMvc.perform(get("/producers/interval")).andExpect(status().isOk());
+        mockMvc.perform(get("/producers/intervals/highestAndLowest")).andExpect(status().isOk());
     }
 
     @Test
     public void testEmptyFindHighestIntervals() throws Exception {
-        given(producerService.findHighestWinInterval()).willThrow(EmptySearchException.class);
-        mockMvc.perform(get("/producers/interval")).andExpect(status().isNotFound());
+        given(producerService.findHighestAndLowestWinInterval()).willThrow(EmptySearchException.class);
+        mockMvc.perform(get("/producers/intervals/highestAndLowest")).andExpect(status().isNotFound());
     }
 
     @Test
     public void testEmptyFindLowestIntervals() throws Exception {
-        given(producerService.findLowestWinInterval()).willThrow(EmptySearchException.class);
-        mockMvc.perform(get("/producers/interval")).andExpect(status().isNotFound());
+        given(producerService.findHighestAndLowestWinInterval()).willThrow(EmptySearchException.class);
+        mockMvc.perform(get("/producers/intervals/highestAndLowest")).andExpect(status().isNotFound());
     }
 
 }

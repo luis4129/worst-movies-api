@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -25,16 +26,10 @@ public class ProducerResource {
     @Autowired
     ProducerService producerService;
 
-    @GetMapping("/interval")
-    public ResponseEntity<Map<String, Collection<ProducerWinIntervalDTO>>> studios() {
-        try {
-            Map<String, Collection<ProducerWinIntervalDTO>> intervalsMap = new HashMap<>();
-            intervalsMap.put("min", producerService.findHighestWinInterval());
-            intervalsMap.put("max", producerService.findLowestWinInterval());
-            return new ResponseEntity(intervalsMap, HttpStatus.OK);
-        } catch (EmptySearchException ex) {
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/intervals/highestAndLowest")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, Collection<ProducerWinIntervalDTO>> studios() throws EmptySearchException {
+        return producerService.findHighestAndLowestWinInterval();
     }
 
 }
