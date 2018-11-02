@@ -6,7 +6,7 @@
 
 # Pré-requisitos
 
-- Maven. Link para download: http://ftp.unicamp.br/pub/apache/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz
+- Maven. Link para download: https://www-us.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz
 - Git. Link para downlaod: https://git-scm.com/download/win
 
 # Baixando o repositório
