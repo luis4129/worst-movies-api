@@ -24,6 +24,9 @@ Caso contrário, basta abrir outro Git Bash no diretório do repositório clonad
 Após isso, basta executar o comando abaixo para gerar o JAR do repositório (Nesse momento os testes serão rodados):
 - $ mvn package
 
+Obs: Caso deseje rodar os testes de integração separadamente, basta rodar o comando abaixo:
+- $ mvn test
+
 # Executando o JAR
 
 Agora só falta executar, execute o comando abaixo para entrar no diretório do JAR criado:
