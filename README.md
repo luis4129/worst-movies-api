@@ -38,10 +38,10 @@ Agora basta executar o JAR, com o comando abaixo:
 - $ java -jar worstmovies-0.0.1-SNAPSHOT.jar
 
 # Pronto! Agora é só consumir os end-points abaixo:
-- Listar todos os filmes: (GET) http://localhost:8008/movies;
-- Listar um filme correspondente a um ID: (GET) http://localhost:8008/movies/{id};
-- Listar os filmes vencedores de um ano específico: (GET) http://localhost:8008/movies/years/{year}/winners;
-- Listar anos que tiveram mais de um filme vencedor: (GET) http://localhost:8008/movies/years/multipleWinners;
-- Listar estudios por ordem de contagem de vitórias: (GET) http://localhost:8008/studios;
-- Listar maior e menos intervalo entre vitórias dentre os produtores: (GET) http://localhost:8008/producers/intervals/highestAndLowest
-- Excluir um filme: (DELETE) http://localhost:8008/movies/{id};
+- Listar todos os filmes: (GET) http://localhost:8080/movies;
+- Listar um filme correspondente a um ID: (GET) http://localhost:8080/movies/{id};
+- Listar os filmes vencedores de um ano específico: (GET) http://localhost:8080/movies/years/{year}/winners;
+- Listar anos que tiveram mais de um filme vencedor: (GET) http://localhost:8080/movies/years/multipleWinners;
+- Listar estudios por ordem de contagem de vitórias: (GET) http://localhost:8080/studios;
+- Listar maior e menos intervalo entre vitórias dentre os produtores: (GET) http://localhost:8080/producers/intervals/highestAndLowest
+- Excluir um filme: (DELETE) http://localhost:8080/movies/{id};
