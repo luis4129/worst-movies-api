@@ -20,16 +20,16 @@ public class ProducerServiceImpl implements ProducerService {
 
     @Override
     public Collection<ProducerWinIntervalDTO> findHighestWinInterval() throws EmptySearchException {
-        return Validator.getNonEmptyCollection(filterByHighestInterval(producerRepository.findProducersHighestInterval()));
+        return Validator.getNonEmptyCollection(filterByTopIntervals(producerRepository.findProducersOrderByHighestIntervals()));
     }
 
     @Override
     public Collection<ProducerWinIntervalDTO> findLowestWinInterval() throws EmptySearchException {
-        return Validator.getNonEmptyCollection(filterByHighestInterval(producerRepository.findProducersLowestInterval()));
+        return Validator.getNonEmptyCollection(filterByTopIntervals(producerRepository.findProducersOrderByLowestIntervals()));
     }
 
-    private Collection<ProducerWinIntervalDTO> filterByHighestInterval(Collection<ProducerWinIntervalDTO> intervals) {
-        return intervals.stream().filter(interval -> interval.equals(intervals.stream().map(ProducerWinIntervalDTO::getInterval).findFirst().orElse(-1))).collect(Collectors.toList());
+    private Collection<ProducerWinIntervalDTO> filterByTopIntervals(Collection<ProducerWinIntervalDTO> intervals) {
+        return intervals.stream().filter(interval -> interval.getInterval().compareTo(intervals.stream().map(ProducerWinIntervalDTO::getInterval).findFirst().orElse(-1)) == 0).collect(Collectors.toList());
     }
 
     @Override
