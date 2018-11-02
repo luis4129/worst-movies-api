@@ -37,7 +37,7 @@ Agora só falta executar, execute o comando abaixo para entrar no diretório do 
 Agora basta executar o JAR, com o comando abaixo:
 - $ java -jar worstmovies-0.0.1-SNAPSHOT.jar
 
-# Pronto! Agora é só abrir consumir os end-points abaixo:
+# Pronto! Agora é só consumir os end-points abaixo:
 - Listar todos os filmes: (GET) http://localhost:8008/movies;
 - Listar um filme correspondente a um ID: (GET) http://localhost:8008/movies/{id};
 - Listar os filmes vencedores de um ano específico: (GET) http://localhost:8008/movies/years/{year}/winners;
