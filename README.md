@@ -21,10 +21,12 @@ Caso ainda estiver com o Git Bash utilizado anteriormente, execute o comando aba
 
 Caso contrário, basta abrir outro Git Bash no diretório do repositório clonado.
 
-Após isso, basta executar o comando abaixo para gerar o JAR do repositório (Nesse momento os testes serão rodados):
+Após isso, basta executar o comando abaixo para gerar o JAR do repositório (Nesse momento os testes de integração serão executados):
 - $ mvn package
 
-Obs: Caso deseje rodar os testes de integração separadamente, basta rodar o comando abaixo:
+# Executando os testes de integração manualmente (Opcional)
+
+Caso deseje rodar os testes de integração separadamente, basta rodar o comando abaixo:
 - $ mvn test
 
 # Executando o JAR
