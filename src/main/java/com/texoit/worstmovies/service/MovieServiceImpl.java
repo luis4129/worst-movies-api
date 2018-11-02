@@ -28,18 +28,6 @@ public class MovieServiceImpl implements MovieService {
     private static final String MOVIE_LIST_FILE = System.getProperties().get("user.dir").toString().replace("\\target", "") + "\\csv-data\\movielist.csv";
 
     @Override
-    public Collection<Movie> importData() throws IOException {
-        Collection<Movie> movies = importService.importData(MovieImportDTO.class, MOVIE_LIST_FILE).stream().map(movieImportDTO -> new Movie(movieImportDTO)).collect(Collectors.toList());
-        Map<String, Producer> producersByNames = getProducersMapByMovie(movies);
-        Map<String, Studio> studiosByNames = getStudiosMapByMovie(movies);
-        movies.forEach(movie -> {
-            movie.setProducers(movie.getProducers().stream().map(producer -> producersByNames.get(producer.getName())).collect(Collectors.toList()));
-            movie.setStudios(movie.getStudios().stream().map(studio-> studiosByNames.get(studio.getName())).collect(Collectors.toList()));
-        });
-        return (Collection<Movie>) movieRepository.saveAll(movies);
-    }
-
-    @Override
     public Collection<Movie> findWinnersByYear(Integer year) throws EmptySearchException {
         return Validator.getNonEmptyCollection(movieRepository.findMovieByWinnerAndYear(true, year));
     }
@@ -68,6 +56,18 @@ public class MovieServiceImpl implements MovieService {
             throw new WinnerDeleteException();
 
         movieRepository.delete(movie.get());
+    }
+
+    @Override
+    public Collection<Movie> importData() throws IOException {
+        Collection<Movie> movies = importService.importData(MovieImportDTO.class, MOVIE_LIST_FILE).stream().map(movieImportDTO -> new Movie(movieImportDTO)).collect(Collectors.toList());
+        Map<String, Producer> producersByNames = getProducersMapByMovie(movies);
+        Map<String, Studio> studiosByNames = getStudiosMapByMovie(movies);
+        movies.forEach(movie -> {
+            movie.setProducers(movie.getProducers().stream().map(producer -> producersByNames.get(producer.getName())).collect(Collectors.toList()));
+            movie.setStudios(movie.getStudios().stream().map(studio-> studiosByNames.get(studio.getName())).collect(Collectors.toList()));
+        });
+        return (Collection<Movie>) movieRepository.saveAll(movies);
     }
 
     private Map<String, Producer> getProducersMapByMovie(Collection<Movie> movies) {

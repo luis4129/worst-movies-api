@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -21,7 +22,10 @@ public class StudioResourceTest {
 
     @Test
     public void testValidFindStudios() throws Exception {
-        mockMvc.perform(get("/studios")).andExpect(status().isOk());
+        mockMvc.perform(get("/studios"))
+                .andExpect(jsonPath("$.studios[*].name").isNotEmpty())
+                .andExpect(jsonPath("$.studios[*].winCount").isNotEmpty())
+                .andExpect(status().isOk());
     }
 
 }
