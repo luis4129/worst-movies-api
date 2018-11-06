@@ -19,12 +19,12 @@ public class Movie {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "movie_has_studios", joinColumns = {@JoinColumn(name="movie_title")}, inverseJoinColumns = {@JoinColumn(name="studio_name")})
+    @JoinTable(name = "movie_has_studios", joinColumns = {@JoinColumn(name="movie_id")}, inverseJoinColumns = {@JoinColumn(name="studio_id")})
     @JsonManagedReference
     private Collection<Studio> studios;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "movie_has_producers", joinColumns = {@JoinColumn(name="movie_title")}, inverseJoinColumns = {@JoinColumn(name="producer_name")})
+    @JoinTable(name = "movie_has_producers", joinColumns = {@JoinColumn(name="movie_id")}, inverseJoinColumns = {@JoinColumn(name="producer_id")})
     @JsonManagedReference
     private Collection<Producer> producers;
 
